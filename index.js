@@ -27,6 +27,14 @@ function createItem(item) {
 	const clone = template.content.querySelector(".to-do__item").cloneNode(true);
   const textElement = clone.querySelector(".to-do__item-text");
   const deleteButton = clone.querySelector(".to-do__item-button_type_delete");
+
+    deleteButton.addEventListener("click", () => {
+          clone.remove();
+
+          const items = getTasksFromDOM();
+          saveTasks(items);
+    });
+
   const duplicateButton = clone.querySelector(".to-do__item-button_type_duplicate");
   const editButton = clone.querySelector(".to-do__item-button_type_edit");
 
