@@ -10,10 +10,10 @@ let items = [
 const listElement = document.querySelector(".to-do__list");
 const formElement = document.querySelector(".to-do__form");
 const inputElement = document.querySelector(".to-do__input");
-const STORAGE_KEY = "tasks";
+const key = "tasks";
 
 function loadTasks() {
-  const saved = localStorage.getItem(STORAGE_KEY);
+  const saved = localStorage.getItem(key);
 
   if (saved) {
     return JSON.parse(saved);
@@ -35,8 +35,8 @@ function createItem(item) {
           saveTasks(items);
     });
 
-      const duplicateButton = clone.querySelector(".to-do__item-button_type_duplicate");
-      duplicateButton.addEventListener("click", () => {
+    const duplicateButton = clone.querySelector(".to-do__item-button_type_duplicate");
+    duplicateButton.addEventListener("click", () => {
           const itemName = textElement.textContent;
 
           const newItem = createItem(itemName);
@@ -45,13 +45,22 @@ function createItem(item) {
 
           const items = getTasksFromDOM();
           saveTasks(items);
-        });
-  const editButton = clone.querySelector(".to-do__item-button_type_edit");
+    });
 
-  textElement.textContent = item;
+    const editButton = clone.querySelector(".to-do__item-button_type_edit");
+    textElement.textContent = item;
+    editButton.addEventListener("click", () => {
+      textElement.setAttribute("contenteditable", "true");
+      textElement.focus();
+    });
 
-  return clone;
+    textElement.addEventListener("blur", () => {
+      textElement.setAttribute("contenteditable", "false");
 
+      const items = getTasksFromDOM();
+      saveTasks(items);
+    });
+    return clone;
 }
 
 items = loadTasks();
@@ -73,7 +82,7 @@ function getTasksFromDOM() {
 }
 
 function saveTasks(tasks) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  localStorage.setItem(key, JSON.stringify(tasks));
 }
 
 formElement.addEventListener("submit", (evt) => {
