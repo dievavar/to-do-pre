@@ -25,8 +25,8 @@ function loadTasks() {
 function createItem(item) {
 	const template = document.getElementById("to-do__item-template");
 	const clone = template.content.querySelector(".to-do__item").cloneNode(true);
-  const textElement = clone.querySelector(".to-do__item-text");
-  const deleteButton = clone.querySelector(".to-do__item-button_type_delete");
+    const textElement = clone.querySelector(".to-do__item-text");
+    const deleteButton = clone.querySelector(".to-do__item-button_type_delete");
 
     deleteButton.addEventListener("click", () => {
           clone.remove();
@@ -35,7 +35,17 @@ function createItem(item) {
           saveTasks(items);
     });
 
-  const duplicateButton = clone.querySelector(".to-do__item-button_type_duplicate");
+      const duplicateButton = clone.querySelector(".to-do__item-button_type_duplicate");
+      duplicateButton.addEventListener("click", () => {
+          const itemName = textElement.textContent;
+
+          const newItem = createItem(itemName);
+
+          listElement.prepend(newItem);
+
+          const items = getTasksFromDOM();
+          saveTasks(items);
+        });
   const editButton = clone.querySelector(".to-do__item-button_type_edit");
 
   textElement.textContent = item;
